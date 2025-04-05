@@ -1,27 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Suno Mini Glitch</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suno Clone Web</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+
+    .container {
+      max-width: 500px;
+      width: 100%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #status {
+      margin-top: 15px;
+      text-align: center;
+      color: #666;
+    }
+
+    audio {
+      margin-top: 15px;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-  <h1>Generate Musik AI</h1>
-  <input id="prompt" type="text" placeholder="Genre atau mood...">
-  <button onclick="generate()">Generate</button>
-  <p id="status"></p>
-  <audio id="player" controls></audio>
+  <h1>AI Music + Voice Generator</h1>
+  <div class="container">
+    <label for="prompt">Masukkan gaya musik / lirik:</label>
+    <textarea id="prompt" rows="3" placeholder="Contoh: Lagu punk dengan lirik tentang mimpi..."></textarea>
+
+    <button onclick="generate()">Generate Musik & Vokal</button>
+
+    <p id="status">Siap untuk generate...</p>
+    <audio id="player" controls></audio>
+  </div>
 
   <script>
     async function generate() {
       const prompt = document.getElementById("prompt").value;
-      document.getElementById("status").textContent = "Menghasilkan musik...";
+      const status = document.getElementById("status");
+      const player = document.getElementById("player");
+
+      status.textContent = "Sedang mengolah musik dan vokal...";
+      
       const res = await fetch("/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt })
       });
+
+      if (!res.ok) {
+        status.textContent = "Gagal generate. Coba lagi.";
+        return;
+      }
+
       const blob = await res.blob();
-      document.getElementById("player").src = URL.createObjectURL(blob);
-      document.getElementById("status").textContent = "Selesai!";
+      player.src = URL.createObjectURL(blob);
+      status.textContent = "Selesai! Silakan putar hasilnya.";
     }
   </script>
 </body>
