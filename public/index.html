@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Suno Mini</title>
+</head>
+<body>
+  <h1>Generate Musik AI</h1>
+  <input id="prompt" type="text" placeholder="Tulis genre / mood">
+  <button onclick="generate()">Generate</button>
+  <audio id="player" controls></audio>
+
+  <script>
+    async function generate() {
+      const prompt = document.getElementById("prompt").value;
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      });
+      const blob = await res.blob();
+      document.getElementById("player").src = URL.createObjectURL(blob);
+    }
+  </script>
+</body>
+</html>
 
