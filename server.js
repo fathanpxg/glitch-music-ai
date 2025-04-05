@@ -10,7 +10,7 @@ app.post("/generate", async (req, res) => {
     const response = await fetch("https://api-inference.huggingface.co/models/facebook/musicgen-small", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer YOUR_HUGGINGFACE_TOKEN",
+        "Authorization": "Bearer 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",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ inputs: prompt })
