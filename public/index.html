@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Suno Mini</title>
+  <title>Suno Mini Glitch</title>
 </head>
 <body>
   <h1>Generate Musik AI</h1>
-  <input id="prompt" type="text" placeholder="Tulis genre / mood">
+  <input id="prompt" type="text" placeholder="Genre atau mood...">
   <button onclick="generate()">Generate</button>
+  <p id="status"></p>
   <audio id="player" controls></audio>
 
   <script>
     async function generate() {
       const prompt = document.getElementById("prompt").value;
+      document.getElementById("status").textContent = "Menghasilkan musik...";
       const res = await fetch("/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -19,8 +21,8 @@
       });
       const blob = await res.blob();
       document.getElementById("player").src = URL.createObjectURL(blob);
+      document.getElementById("status").textContent = "Selesai!";
     }
   </script>
 </body>
 </html>
-
